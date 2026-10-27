@@ -2,7 +2,7 @@
   "name": "pk-locator",
   "private": true,
   "type": "module",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "scripts": {
     "test": "node --test tests/*.test.js"
   },
