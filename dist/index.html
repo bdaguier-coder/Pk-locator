@@ -10,8 +10,8 @@
   <title>PK Locator — Localisation</title>
   <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="./vendor/leaflet.css"><link rel="stylesheet" href="./vendor/maplibre-gl.css"><link rel="stylesheet" href="./style.css">
-  <script defer src="./vendor/leaflet.js"></script><script defer src="./vendor/maplibre-gl.js"></script><script defer src="./vendor/leaflet-maplibre-gl.js"></script><script type="module" src="./app.js"></script>
+  <link rel="stylesheet" href="./vendor/leaflet.css"><link rel="stylesheet" href="./vendor/maplibre-gl.css"><link rel="stylesheet" href="./style.css?v=1.2.0">
+  <script defer src="./vendor/leaflet.js"></script><script defer src="./vendor/maplibre-gl.js"></script><script defer src="./vendor/leaflet-maplibre-gl.js"></script><script type="module" src="./app.js?v=1.2.0"></script>
 </head>
 <body>
   <header class="topbar">
@@ -45,7 +45,7 @@
         </section>
         <div class="divider"></div>
         <button id="pin-mode" class="free-position"><span class="pin-symbol">⌖</span><span><strong>Placer un point librement</strong><small>Touchez la carte, puis déplacez le marqueur</small></span><span>↗</span></button>
-        <section class="layer-section"><div class="section-heading">SUR LA CARTE <span id="data-count">Données ouvertes</span></div><label class="toggle-row"><span><i class="legend-road"></i>Autoroutes & grands axes</span><input type="checkbox" id="show-roads" checked></label><label class="toggle-row"><span><i class="legend-pk"></i>Bornes PK / PR documentées</span><input type="checkbox" id="show-pk" checked></label><label class="toggle-row"><span><i class="legend-poi"></i>Points d’intérêt</span><input type="checkbox" id="show-poi" checked></label><p class="micro">PK / PR dès le zoom 10, chargés automatiquement en Espagne, France et Allemagne. Zoomez pour afficher davantage de bornes. Points d’intérêt à partir du zoom 14.</p><p id="pk-status" class="micro" aria-live="polite">Chargement national selon la carte.</p><button id="load-area" class="outline">Rechercher les données de cette zone</button></section>
+        <section class="layer-section"><div class="section-heading">SUR LA CARTE <span id="data-count">Données ouvertes</span></div><label class="toggle-row"><span><i class="legend-road"></i>Autoroutes & grands axes</span><input type="checkbox" id="show-roads" checked></label><label class="toggle-row"><span><i class="legend-pk"></i>Bornes PK / PR documentées</span><input type="checkbox" id="show-pk" checked></label><label class="toggle-row"><span><i class="legend-poi"></i>Points d’intérêt</span><input type="checkbox" id="show-poi" checked></label><p class="micro">Index nationaux Espagne, France et Allemagne. Bornes espacées sur les vues générales ; zoomez pour détailler. Bleu : autoroutes ; rouge : routes nationales ; orange : autres routes. Points d’intérêt au zoom 14.</p><p id="pk-status" class="micro" aria-live="polite">Chargement national selon la carte.</p><button id="load-area" class="outline">Rechercher les données de cette zone</button></section>
         <section id="selection" class="selection" hidden aria-live="polite"></section>
       </div>
       <footer><span>© 2026 Benjamin Daguier — Tous droits réservés.</span><button id="sources">Sources & couverture ↗</button></footer>
@@ -53,6 +53,7 @@
     <section class="map-stage" aria-label="Carte interactive">
       <div id="map" role="region" aria-label="Carte interactive de localisation"></div>
       <div class="map-top"><div class="location-chip"><span class="live-ring"></span><span id="map-title">Europe · sélectionnez une ville</span></div><div class="base-switch" aria-label="Fond de carte"><button id="base-map" class="active">Carte</button><button id="base-satellite">Satellite</button></div></div>
+      <nav class="country-bar" aria-label="Territoire"><button data-country-view="ES">Espagne</button><button data-country-view="FR">France</button><button data-country-view="DE">Allemagne</button><select id="country-region" aria-label="Région du pays"></select><span id="national-summary">Préparation des index…</span></nav>
       <div id="point-preview" class="point-preview" hidden><strong id="point-coords"></strong><span>Point choisi · marqueur déplaçable</span><div><button id="point-copy">Copier GPS</button><button id="point-sheet">Voir la fiche</button></div></div>
       <div id="map-message" class="map-message" role="status" aria-live="polite">Chargement de la carte…</div>
       <button class="center-pick" id="center-pick" title="Placer un point au centre de la carte">⌖ <span>Placer un point au centre</span></button>

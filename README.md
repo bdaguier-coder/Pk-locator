@@ -2,94 +2,41 @@
 
 © 2026 Benjamin Daguier — Tous droits réservés.
 
-Application cartographique statique en français, conçue pour GitHub Pages et
-préparée comme PWA. Identité Midnight Navigation éclaircie : panneaux blancs, carte claire, bleu nuit et vert menthe dans les accents.
-Aucun serveur applicatif, aucun compte utilisateur et aucune API payante obligatoire.
+Application statique et PWA de localisation pour l'assistance. Site : https://bdaguier-coder.github.io/Pk-locator/
 
-## État réel au 26 octobre 2026
+## Version 1.2.0 : index nationaux préparés
 
-Le projet est construit et testé en prévisualisation. Le dépôt indépendant
-`bdaguier-coder/pk-locator` n’a pas encore été créé. La publication GitHub Pages
-est bloquée par la connexion au navigateur GitHub. Aucune adresse HTTPS publiée
-n’a été vérifiée ; l’application ne doit pas être présentée comme déjà en ligne.
+La recherche PK/PR utilise des fichiers statiques couvrant l'intégralité des réponses des référentiels nationaux téléchargés. Elle est indépendante de la ville et de la zone affichées. Aucun appel à un WFS national n'est nécessaire pour une recherche de borne déjà indexée.
 
-| Fonction | État et vérification |
-|---|---|
-| Ville Valencia / Angers | Testées dans le navigateur sur des centres Nominatim réellement récupérés ; grands axes OSM visibles, dont AP-7 à Valencia |
-| PK / PR | V-30, PK 12, testé ; A11, PR 257, testé avec choix de section et de côté ; aucun PK interpolé |
-| Localisation libre | Sélection du centre testée à Angers ; adresse Nominatim réelle, repères OSM, distances et copie GPS / fiche vérifiés |
-| Indices | « McDonald’s, pharmacie, rond-point » testé dans les deux secteurs ; plusieurs hypothèses et concordances affichées |
-| Carte | Fond Esri clair de secours affiché et testé ; fond OpenFreeMap configuré mais non vérifié visuellement, WebGL 2 absent du navigateur de test |
-| Satellite | Imagerie Esri réellement affichée et contrôlée dans le navigateur |
-| Google Maps / Earth | Liens construits sur les coordonnées sélectionnées, target=_blank ; ouverture effective externe non validée |
-| Mobile | Présentation et sélection du centre contrôlées dans une fenêtre intégrée de 390 × 844 ; aucun test sur iPhone physique |
-| PWA | Manifest, portée relative, icônes et fichiers du cache contrôlés ; installation réelle et mode hors ligne après publication HTTPS à valider |
-| Portugal / Allemagne / Italie | Pays disponibles pour recherche de ville et requêtes OSM ; pas de référentiel officiel intégré ni de test terrain national |
-| Services publics dynamiques | Adresse Nominatim vérifiée à Angers et sur V-30 ; Overpass parfois lent ou en erreur, couverture externe non garantie |
+Au 27 octobre 2026, l'index comprend 675 414 positions : 190 893 bornes routières IGN/CNIG en Espagne (péninsule, Baléares et Canaries), 471 310 PR IGN BD TOPO en France (métropole et territoires ultramarins présents dans la source), et 13 211 positions de kilométrage des autoroutes fédérales allemandes BKG POI-Open. Six entrées françaises non numériques sont exclues explicitement. La pagination est vérifiée par les comptes nationaux et les identifiants uniques. Les 15 456 références de routes espagnoles utilisées par les bornes ont été reliées à leurs noms officiels par `RoadName` et son `networkRef`, sans association géographique supposée.
 
-Le catalogue initial contient 2 459 PR valides IGN autour d’Angers et 574 bornes
-espagnoles avec référence de route jointe au WFS officiel. Les 820 bornes
-espagnoles sans correspondance de route vérifiable ont été exclues. Les bornes
-ferroviaires et les points français au statut « Calculé » sont exclus.
-Les secteurs OSM centraux contiennent 2 200 repères à Valencia et 744 à Angers.
-Ces inventaires sont partiels ; l’absence d’un résultat ne prouve pas une absence
-sur le terrain. Voir DATA.md et dist/data/provenance.json.
+Des boutons Espagne, France et Allemagne affichent les vues générales. Un sélecteur donne accès aux Canaries, aux Baléares et aux territoires ultramarins français présents dans les sources. Les PK réellement présents dans les sources sont espacés selon le zoom, avec des étiquettes numériques compactes : bleu pour les autoroutes, rouge pour les nationales, orange pour les autres routes. Les amas d'étiquettes d'autoroutes des anciens secteurs préchargés sont supprimés à faible zoom.
 
-## Utilisation
+Le cas AP-1 PK 125 retourne les deux positions et sens IGN au Pays basque. Les homonymes de PR français restent séparés par section et côté. Aucun point absent n'est interpolé. Un inventaire national complet ne garantit pas que chaque borne physique ou chaque route est documentée par le producteur ; l'Allemagne couvre les autoroutes fédérales, pas l'ensemble des autres routes allemandes.
 
-Le mode Ville centre la carte ; les repères intégrés apparaissent au zoom 14.
-Hors secteur intégré, le bouton de recherche de zone consulte Overpass.
-Le mode PK / PR n’accepte qu’une borne référencée correspondant exactement au
-pays, à la route et au numéro. Il propose un choix si la référence est ambiguë.
-Pour la localisation libre : appui long, clic droit, activation du placement puis
-clic, ou sélection du centre. L’appui long sur un iPhone physique reste à tester.
+## Autres fonctions
 
-La recherche par indices est un recoupement déterministe de mots-clés et de noms
-d’établissements dans une zone bornée. Il ne s’agit pas d’une compréhension
-universelle du langage naturel. Le rayon de proximité est configurable ; aucune
-analyse de visibilité, d’accès ou d’itinéraire n’est effectuée. Les coordonnées
-d’une zone candidate désignent un repère d’ancrage, jamais la présence confirmée
-d’une personne. Les distances sont à vol d’oiseau.
+Recherche de ville dans cinq pays (France, Espagne, Allemagne, Portugal, Italie), carte et satellite, placement direct et déplacement d'un point, adresse proche, repères réels à proximité et distances à vol d'oiseau, copie GPS et fiche d'assistance, liens Maps / Earth dans un autre onglet. Recoupement d'indices par mots-clés et noms OSM : plusieurs hypothèses, concordances et éléments non retrouvés explicitement affichés.
 
-## Développement et vérification
+Les points d'intérêt extérieurs aux secteurs OSM préchargés de Valencia et Angers sont consultés via Overpass lors d'une sélection ou d'une recherche de zone. Les bâtiments peuvent être représentés par leur centre, pas leur entrée. Les recherches de villes et d'adresses passent par Nominatim ; fournisseurs publics susceptibles de délais et limitations. Aucun compte, aucune publicité, aucun accès GPS automatique.
 
-Node 22 ou plus récent, sans installation de dépendances : `npm test`.
-Les huit tests portent sur les données réelles, la séparation pays/sections,
-l’absence d’interpolation, les concordances, les distances et les actifs PWA.
-Pour une consultation locale, servir `dist/` avec un serveur HTTP ; l’ouverture
-directe de index.html depuis le système de fichiers ne suffit pas.
+## Construire et vérifier
 
-Les bibliothèques cartographiques sont vendues localement dans dist/vendor,
-avec leurs licences. Aucun secret n’est nécessaire dans le navigateur.
-Nominatim se change dans Sources & couverture sans mise à jour du code ; les
-services publics partagés ne garantissent pas un usage professionnel massif.
+Python 3.12+, Node 22+, curl. Aucun paquet applicatif à installer.
 
-## Publication prévue sur GitHub Pages
+```sh
+python scripts/build-national.py
+npm test
+```
 
-Créer uniquement le dépôt public indépendant `pk-locator`, avec la branche main.
-Importer les fichiers de ce projet sans .openai ni fichiers de prévisualisation.
-Dans les paramètres Pages du dépôt, sélectionner GitHub Actions comme source.
-Le workflow `.github/workflows/pages.yml` exécute les tests puis publie `dist/`.
-Vérifier l’URL réellement retournée par le déploiement avant toute livraison.
-Le compte connecté doit autoriser ce nouveau dépôt à l’application GitHub si son
-installation n’a accès qu’à une liste de dépôts sélectionnés.
+Le script récupère et vérifie toutes les pages des trois sources, les noms routiers espagnols, puis produit `dist/data/national/`. Les réponses brutes sont mises en cache dans `.national-cache/`, hors site publié. Les index sont répartis par grille géographique et par groupe de routes pour limiter le volume téléchargé par le téléphone. Les vues générales n'utilisent que des points réels du référentiel à des multiples de dix ; elles ne génèrent pas de nouvelles positions.
 
-Après publication : vérifier le chargement sous le sous-chemin du dépôt,
-l’installation PWA, le service worker, le cache, le tactile iPhone et les deux
-liens externes. Ces étapes restent à faire et ne sont pas déclarées terminées.
+La procédure GitHub Actions construit ces données avant les tests et la publication de `dist/` sur GitHub Pages. Le cache évite de télécharger à nouveau les mêmes sources à chaque modification d'interface. Pour une actualisation des sources, changer la clé de cache dans `.github/workflows/pages.yml`. Les données générées (environ 207 Mo) ne sont pas commitées dans Git ; elles sont incluses dans l'artefact Pages. Les comptes, limites géographiques et empreintes des réponses se trouvent dans `data/national/manifest.json` publié.
 
-## Licences
+Les tests vérifient l'exhaustivité de la pagination par rapport aux comptes sources, les associations de routes, les groupes d'index, l'absence d'interpolation, les deux positions AP-1 PK 125, les recherches nationales française et allemande, les recoupements réels Valencia/Angers et les fichiers PWA. Les interactions sont également vérifiées dans le navigateur. L'essai tactile et l'installation sur un iPhone physique restent à effectuer.
 
-Le code original porte le copyright demandé. Les licences IGN France, IGN/CNIG
-Espagne, OpenStreetMap, Leaflet, MapLibre et des fournisseurs d’imagerie restent
-applicables à leurs données et composants. Les textes sont dans LICENSE et DATA.md.
+## Installation et disponibilité
 
-## Version 1.1.0 — correction de la couverture et des interactions
+Sur iPhone, ouvrir dans Safari puis Partager → Sur l'écran d'accueil. L'interface, le manifeste national et l'aperçu espagnol sont préchargés pour le cache ; les autres groupes consultés peuvent être mis en cache progressivement. Une première recherche dans une nouvelle région ou sur une nouvelle route nécessite Internet. Fonds de carte, imagerie, adresses et nouveaux POI nécessitent aussi Internet.
 
-La carte affiche les PK / PR dès le zoom 10, avec davantage de numéros visibles en zoomant ; les étiquettes sont espacées pour rester lisibles. Le compteur est affiché sur la carte. Les bornes nationales sont consultées automatiquement selon la zone en Espagne, en France et en Allemagne, en complément des secteurs préchargés. La recherche PK/PR interroge le référentiel national de la route lorsque la borne n'est pas déjà chargée. Voir `DATA.md` pour l'étendue exacte des sources, les licences et les limites. Le fichier AP-7 contient 1481 positions IGN réparties sur l'itinéraire national référencé ; les numéros absents restent absents.
-
-Un clic ou un appui simple sur un endroit vide de la carte place directement un marqueur. Ce marqueur est déplaçable ; les coordonnées et la commande « Copier GPS » restent visibles sur la carte. Sur mobile, le panneau se replie lors du placement manuel ; « Voir la fiche » le rouvre. Le choix du centre reste disponible.
-
-Couverture nationale = possibilité d'interroger le service national en ligne, pas garantie d'un PK pour chaque route ou chaque numéro. Pour l'Allemagne, la source BKG concerne les autoroutes fédérales. Les services gratuits peuvent être indisponibles et leurs inventaires incomplets. Les points d'intérêt extérieurs aux secteurs préchargés dépendent toujours d'OpenStreetMap / Overpass.
-
-Vérifications de la version 1.1.0 : 16 tests Node ; vérification dans le navigateur du service national allemand A1 PK 7 (53.56168050770224, 10.172778040307266), de deux correspondances françaises A1 PR 100 (côtés D et G), du chargement automatique autour de Madrid (203 étiquettes visibles au zoom 11 lors de l'essai) et de PK AP-7 dans la vue mobile de Valencia. Appui simple et déplacement du marqueur vérifiés dans une mise en page 390 × 844 ; l'essai sur un iPhone physique reste à effectuer. Le presse-papiers de l'aperçu HTTP utilise le dialogue de copie de secours ; la copie doit être vérifiée sur le site HTTPS après publication.
+Fond principal OpenFreeMap / OpenStreetMap ; fond Esri Light Gray de secours sans WebGL2. Ce fond de secours peut être ancien. Satellite Esri World Imagery. Les données IGN France sont sous Licence Ouverte 2.0 ; IGN/CNIG Espagne sous CC-BY 4.0 ; BKG POI-Open sous Deutschland Namensnennung 2.0, attribution © Bundesamt für Kartographie und Geodäsie (2025) ; OpenStreetMap sous ODbL. Les licences de données et bibliothèques tierces restent applicables indépendamment du copyright de l'application. Voir DATA.md.
