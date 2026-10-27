@@ -76,3 +76,19 @@ réponses sans inventer de positions. `dist/data/provenance.json` contient les
 empreintes SHA-256 des réponses utilisées. Les fichiers bruts volumineux ne sont
 pas nécessaires à l’exécution du site. `npm test` vérifie les règles avec les
 vraies données intégrées.
+
+## Extension nationale, 27 octobre 2026
+
+`dist/national.js` interroge les inventaires nationaux sur la zone visible (zoom 10+) et sur une route saisie. Aucun serveur privé, aucun abonnement requis. Les requêtes sont différées et mises en cache en mémoire. Un inventaire national n'est pas un inventaire exhaustif de toutes les bornes physiques.
+
+France : WFS IGN `BDTOPO_V3:point_de_repere`, toutes les routes du service national (autoroutes, nationales, départementales). EPSG:4326 demandé explicitement ; statut `PR valide` ou `PR0 valide` et numéro numérique uniquement. Section et côté préservés ; aucune borne voisine présentée comme appartenant à la même section si celle-ci manque.
+
+Espagne : API officielle IGN/CNIG `markerpost`, identifiants `VIAL_PK` uniquement, ferroviaire exclu. Les pages intermédiaires peuvent contenir moins d'objets que la limite demandée tout en annonçant une page suivante : la pagination suit le lien `rel=next`. Noms associés à `href_vial` par le WFS officiel `Road`, sans déduire le nom d'une route à partir de coordonnées. Une route non résolue est signalée. Pour le placement sur la carte, les bornes sont affichées même si le nom de la route reste inconnu ; ce nom peut être résolu à la sélection. Pour une recherche de route, le filtre porte sur le nom géographique officiel.
+
+Le catalogue compact `es-road-catalog.json` contient les deux références IGN AP-7 explicitement retournées par le filtre national (pas une association déduite). `es-ap7.json` conserve 1481 positions officielles AP-7 récupérées sur les deux références, 1324 et 157 objets, le 27 octobre 2026. Les numéros manquants ne sont pas interpolés ; ce fichier ne garantit pas chaque kilomètre de l'AP-7. Source : IGN/CNIG IGR-RT, CC-BY 4.0. Le XML brut est conservé hors du dossier publié, en `/tmp/pk-national/ap7-first.xml` pendant la préparation.
+
+Allemagne : BKG POI-Open, kilométrage des Bundesautobahnen (autoroutes fédérales), millésime 03/2025 ; diffusion Esri Deutschland : `https://services2.arcgis.com/jUpNdisbWqRpMo35/arcgis/rest/services/KmBAB/FeatureServer/0`. L'inventaire national annonce 13211 positions. Licence Deutschland Namensnennung 2.0. Attribution : © Bundesamt für Kartographie und Geodäsie (2025). Le signe de stationnement n'est pas transformé en sens de circulation ; le référentiel ne garantit pas une borne physique ni une position sur une chaussée précise. Les routes allemandes autres que les autoroutes ne sont pas couvertes par cette source.
+
+Les services FR / DE sont paginés, avec limite de 16000 / 20000 objets par demande ; ES limite à 16000 par référence. Une limite atteinte est explicitement signalée et invite à zoomer. Les erreurs de service sont affichées ; aucune absence de réponse ne devient une position supposée. Les repères OSM hors Valencia/Angers restent chargés par la commande de recherche des données de la zone ou lors de la sélection d'un point.
+
+Les réponses nationales réelles utilisées pour les tests de normalisation sont dans `tests/fixtures`. Les tests vérifient aussi l'exclusion des points calculés, la conservation des coordonnées, la pagination espagnole avec page courte et la possibilité de retenter une requête échouée.

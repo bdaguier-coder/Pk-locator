@@ -83,3 +83,13 @@ liens externes. Ces étapes restent à faire et ne sont pas déclarées terminé
 Le code original porte le copyright demandé. Les licences IGN France, IGN/CNIG
 Espagne, OpenStreetMap, Leaflet, MapLibre et des fournisseurs d’imagerie restent
 applicables à leurs données et composants. Les textes sont dans LICENSE et DATA.md.
+
+## Version 1.1.0 — correction de la couverture et des interactions
+
+La carte affiche les PK / PR dès le zoom 10, avec davantage de numéros visibles en zoomant ; les étiquettes sont espacées pour rester lisibles. Le compteur est affiché sur la carte. Les bornes nationales sont consultées automatiquement selon la zone en Espagne, en France et en Allemagne, en complément des secteurs préchargés. La recherche PK/PR interroge le référentiel national de la route lorsque la borne n'est pas déjà chargée. Voir `DATA.md` pour l'étendue exacte des sources, les licences et les limites. Le fichier AP-7 contient 1481 positions IGN réparties sur l'itinéraire national référencé ; les numéros absents restent absents.
+
+Un clic ou un appui simple sur un endroit vide de la carte place directement un marqueur. Ce marqueur est déplaçable ; les coordonnées et la commande « Copier GPS » restent visibles sur la carte. Sur mobile, le panneau se replie lors du placement manuel ; « Voir la fiche » le rouvre. Le choix du centre reste disponible.
+
+Couverture nationale = possibilité d'interroger le service national en ligne, pas garantie d'un PK pour chaque route ou chaque numéro. Pour l'Allemagne, la source BKG concerne les autoroutes fédérales. Les services gratuits peuvent être indisponibles et leurs inventaires incomplets. Les points d'intérêt extérieurs aux secteurs préchargés dépendent toujours d'OpenStreetMap / Overpass.
+
+Vérifications de la version 1.1.0 : 16 tests Node ; vérification dans le navigateur du service national allemand A1 PK 7 (53.56168050770224, 10.172778040307266), de deux correspondances françaises A1 PR 100 (côtés D et G), du chargement automatique autour de Madrid (203 étiquettes visibles au zoom 11 lors de l'essai) et de PK AP-7 dans la vue mobile de Valencia. Appui simple et déplacement du marqueur vérifiés dans une mise en page 390 × 844 ; l'essai sur un iPhone physique reste à effectuer. Le presse-papiers de l'aperçu HTTP utilise le dialogue de copie de secours ; la copie doit être vérifiée sur le site HTTPS après publication.

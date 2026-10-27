@@ -44,8 +44,8 @@
           <p class="notice">Les résultats sont des zones candidates. Une concordance ne confirme jamais la position d’une personne.</p><div id="clue-results" class="results" aria-live="polite"></div>
         </section>
         <div class="divider"></div>
-        <button id="pin-mode" class="free-position"><span class="pin-symbol">⌖</span><span><strong>Placer un point librement</strong><small>Appui long, clic droit ou clic après activation</small></span><span>↗</span></button>
-        <section class="layer-section"><div class="section-heading">SUR LA CARTE <span id="data-count">Données ouvertes</span></div><label class="toggle-row"><span><i class="legend-road"></i>Autoroutes & grands axes</span><input type="checkbox" id="show-roads" checked></label><label class="toggle-row"><span><i class="legend-pk"></i>Bornes PK / PR documentées</span><input type="checkbox" id="show-pk" checked></label><label class="toggle-row"><span><i class="legend-poi"></i>Points d’intérêt</span><input type="checkbox" id="show-poi" checked></label><p class="micro">Les repères apparaissent au zoom 14. Hors secteurs intégrés, recherchez les données de la zone.</p><button id="load-area" class="outline">Rechercher les données de cette zone</button></section>
+        <button id="pin-mode" class="free-position"><span class="pin-symbol">⌖</span><span><strong>Placer un point librement</strong><small>Touchez la carte, puis déplacez le marqueur</small></span><span>↗</span></button>
+        <section class="layer-section"><div class="section-heading">SUR LA CARTE <span id="data-count">Données ouvertes</span></div><label class="toggle-row"><span><i class="legend-road"></i>Autoroutes & grands axes</span><input type="checkbox" id="show-roads" checked></label><label class="toggle-row"><span><i class="legend-pk"></i>Bornes PK / PR documentées</span><input type="checkbox" id="show-pk" checked></label><label class="toggle-row"><span><i class="legend-poi"></i>Points d’intérêt</span><input type="checkbox" id="show-poi" checked></label><p class="micro">PK / PR dès le zoom 10, chargés automatiquement en Espagne, France et Allemagne. Zoomez pour afficher davantage de bornes. Points d’intérêt à partir du zoom 14.</p><p id="pk-status" class="micro" aria-live="polite">Chargement national selon la carte.</p><button id="load-area" class="outline">Rechercher les données de cette zone</button></section>
         <section id="selection" class="selection" hidden aria-live="polite"></section>
       </div>
       <footer><span>© 2026 Benjamin Daguier — Tous droits réservés.</span><button id="sources">Sources & couverture ↗</button></footer>
@@ -53,9 +53,10 @@
     <section class="map-stage" aria-label="Carte interactive">
       <div id="map" role="region" aria-label="Carte interactive de localisation"></div>
       <div class="map-top"><div class="location-chip"><span class="live-ring"></span><span id="map-title">Europe · sélectionnez une ville</span></div><div class="base-switch" aria-label="Fond de carte"><button id="base-map" class="active">Carte</button><button id="base-satellite">Satellite</button></div></div>
+      <div id="point-preview" class="point-preview" hidden><strong id="point-coords"></strong><span>Point choisi · marqueur déplaçable</span><div><button id="point-copy">Copier GPS</button><button id="point-sheet">Voir la fiche</button></div></div>
       <div id="map-message" class="map-message" role="status" aria-live="polite">Chargement de la carte…</div>
-      <button class="center-pick" id="center-pick" title="Sélectionner le centre de la carte">⌖ <span>Sélectionner le centre</span></button>
-      <div class="map-bottom"><span><i class="legend-road"></i>Grands axes</span><span><i class="legend-pk"></i>PK / PR</span><span><i class="legend-poi"></i>Repères</span><span id="zoom-label">Zoom 6</span></div>
+      <button class="center-pick" id="center-pick" title="Placer un point au centre de la carte">⌖ <span>Placer un point au centre</span></button>
+      <div class="map-bottom"><span><i class="legend-road"></i>Grands axes</span><span><i class="legend-pk"></i><span id="pk-map-count">PK / PR</span></span><span><i class="legend-poi"></i>Repères</span><span id="zoom-label">Zoom 6</span></div>
       <button id="mobile-panel" class="mobile-panel">⌕ Rechercher / fiche de localisation</button>
     </section>
   </main>

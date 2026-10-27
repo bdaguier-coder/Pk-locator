@@ -60,3 +60,10 @@ dialog::backdrop{background:#173a5366}dialog p{color:#526d82}
 .dialog-close{color:#3f6078}dialog td,dialog th{border-bottom-color:#dce5eb}
 #toast{background:#d5f5e8;color:#0d5949;box-shadow:0 5px 25px #19463821}
 @media(max-width:680px){.sidebar{border-top-color:#c4d6e1;box-shadow:0 -5px 25px #17384d17}.mobile-panel{background:#fff;border-color:#bfd4df;color:#0a705d;box-shadow:0 -2px 8px #19384e0d}}
+
+/* Point selection stays visible on iPhone while the map remains usable. */
+.point-preview{position:absolute;z-index:810;top:72px;left:20px;background:#fff;border:1px solid #a9cfc3;border-radius:10px;padding:12px;box-shadow:0 3px 15px #18344b25;font-size:12px;max-width:calc(100% - 95px)}
+.point-preview strong,.point-preview>span{display:block}.point-preview>span{font-size:10px;color:#516a7b;margin-top:4px}.point-preview div{display:flex;gap:8px;margin-top:8px}.point-preview button{background:#e0f4ed;color:#075c4c;padding:8px;font-size:11px}.selected-pin{cursor:grab;touch-action:none}.selected-pin:active{cursor:grabbing}.pk-marker{min-height:24px;font-size:11px;color:#172e3d;background:#ffe3a5;border:1px solid #96701c;box-shadow:0 1px 5px #172e3d33}#map{touch-action:none}.map-message,.map-bottom{pointer-events:none}
+@media(max-width:680px){.sidebar.collapsed{transform:translateY(100%)}.point-preview{top:65px;left:12px;padding:9px;font-size:11px}.map-message{top:29dvh;max-width:calc(100% - 25px)}.center-pick span{display:inline;font-size:10px}.center-pick{top:40dvh}.map-bottom{top:46dvh}.sidebar.collapsed~.map-stage .mobile-panel{bottom:12px;border-radius:8px;font-size:11px;padding:10px}.sidebar.collapsed~.map-stage .map-bottom{top:auto;bottom:58px}.sidebar.collapsed~.map-stage .center-pick{top:auto;bottom:100px}.sidebar.collapsed~.map-stage .map-message{top:auto;bottom:155px}.leaflet-touch .leaflet-bar a{width:38px;height:38px;line-height:38px}}
+
+html,body{height:100%;overflow:hidden}

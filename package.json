@@ -2,9 +2,9 @@
   "name": "pk-locator",
   "private": true,
   "type": "module",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "scripts": {
-    "test": "node --test tests/core.test.js"
+    "test": "node --test tests/*.test.js"
   },
   "copyright": "© 2026 Benjamin Daguier — Tous droits réservés."
 }
