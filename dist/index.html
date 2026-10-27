@@ -1,0 +1,65 @@
+<!doctype html>
+<!-- © 2026 Benjamin Daguier — Tous droits réservés. -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#102c46"><meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="PK Locator : carte, bornes routières documentées et repères géographiques pour l’assistance.">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>PK Locator — Localisation</title>
+  <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./vendor/leaflet.css"><link rel="stylesheet" href="./vendor/maplibre-gl.css"><link rel="stylesheet" href="./style.css">
+  <script defer src="./vendor/leaflet.js"></script><script defer src="./vendor/maplibre-gl.js"></script><script defer src="./vendor/leaflet-maplibre-gl.js"></script><script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="PK Locator accueil"><img src="./icon.svg" alt="" width="38" height="38"><span>PK <strong>Locator</strong><small>CARTE · PK / PR · REPÈRES</small></span></a>
+    <span class="header-purpose">Localisation pour l’assistance</span>
+    <div class="header-actions"><span id="connection" class="status-dot">En ligne</span><button class="subtle" id="install">Installer l’app <span aria-hidden="true">↗</span></button><button class="icon-btn" id="help" aria-label="Sources, couverture et aide">?</button></div>
+  </header>
+  <main class="workspace">
+    <aside class="sidebar" aria-label="Rechercher une position">
+      <div class="sidebar-scroll">
+        <div class="eyebrow">LOCALISATION & ASSISTANCE</div><h1>Rechercher une position</h1><p class="intro">Recherche par ville, PK/PR ou repères.</p>
+        <nav class="tabs" aria-label="Mode de recherche"><button data-mode="city" class="active" aria-selected="true">Ville</button><button data-mode="pk" aria-selected="false">PK / PR</button><button data-mode="clues" aria-selected="false">Indices</button></nav>
+        <section id="mode-city" class="mode">
+          <form id="city-form"><label for="city">Ville ou localité</label><div class="search-field"><span aria-hidden="true">⌕</span><input id="city" placeholder="Ex. Valencia, Angers…" autocomplete="off" required></div><button class="primary" type="submit">Afficher sur la carte <span aria-hidden="true">→</span></button></form>
+          <div class="quick"><span>ACCÈS RAPIDE</span><button data-city="Valencia">Valencia <span>↗</span></button><button data-city="Angers">Angers <span>↗</span></button></div>
+          <div id="city-results" class="results" aria-live="polite"></div>
+        </section>
+        <section id="mode-pk" class="mode" hidden>
+          <form id="pk-form"><label for="country">Pays</label><select id="country"><option value="ES">Espagne</option><option value="FR">France</option><option value="PT">Portugal</option><option value="DE">Allemagne</option><option value="IT">Italie</option></select>
+          <label for="road">Autoroute / route</label><input id="road" list="road-list" placeholder="Ex. AP-7" value="AP-7" required><datalist id="road-list"></datalist>
+          <label for="pk">Point kilométrique / PR</label><input id="pk" inputmode="decimal" placeholder="Ex. 500 ou 500+000" required>
+          <button type="submit" class="primary">Rechercher la borne <span aria-hidden="true">→</span></button></form>
+          <p id="pk-coverage" class="notice"></p><div id="pk-results" class="results" aria-live="polite"></div>
+        </section>
+        <section id="mode-clues" class="mode" hidden>
+          <form id="clue-form"><label for="clues">Qu’observe votre interlocuteur ?</label><textarea id="clues" rows="3" placeholder="Je vois un McDonald’s, une pharmacie et un rond-point" required></textarea>
+          <label for="zone">Zone de recherche</label><select id="zone"><option value="viewport">Zone actuellement visible sur la carte</option><option value="Valencia">Autour de Valencia</option><option value="Angers">Autour d’Angers</option></select>
+          <label for="radius">Proximité entre les indices</label><select id="radius"><option value="300">300 m</option><option value="600" selected>600 m</option><option value="1000">1 km</option></select>
+          <button type="submit" class="primary">Recouper les indices <span aria-hidden="true">→</span></button></form>
+          <p class="notice">Les résultats sont des zones candidates. Une concordance ne confirme jamais la position d’une personne.</p><div id="clue-results" class="results" aria-live="polite"></div>
+        </section>
+        <div class="divider"></div>
+        <button id="pin-mode" class="free-position"><span class="pin-symbol">⌖</span><span><strong>Placer un point librement</strong><small>Appui long, clic droit ou clic après activation</small></span><span>↗</span></button>
+        <section class="layer-section"><div class="section-heading">SUR LA CARTE <span id="data-count">Données ouvertes</span></div><label class="toggle-row"><span><i class="legend-road"></i>Autoroutes & grands axes</span><input type="checkbox" id="show-roads" checked></label><label class="toggle-row"><span><i class="legend-pk"></i>Bornes PK / PR documentées</span><input type="checkbox" id="show-pk" checked></label><label class="toggle-row"><span><i class="legend-poi"></i>Points d’intérêt</span><input type="checkbox" id="show-poi" checked></label><p class="micro">Les repères apparaissent au zoom 14. Hors secteurs intégrés, recherchez les données de la zone.</p><button id="load-area" class="outline">Rechercher les données de cette zone</button></section>
+        <section id="selection" class="selection" hidden aria-live="polite"></section>
+      </div>
+      <footer><span>© 2026 Benjamin Daguier — Tous droits réservés.</span><button id="sources">Sources & couverture ↗</button></footer>
+    </aside>
+    <section class="map-stage" aria-label="Carte interactive">
+      <div id="map" role="region" aria-label="Carte interactive de localisation"></div>
+      <div class="map-top"><div class="location-chip"><span class="live-ring"></span><span id="map-title">Europe · sélectionnez une ville</span></div><div class="base-switch" aria-label="Fond de carte"><button id="base-map" class="active">Carte</button><button id="base-satellite">Satellite</button></div></div>
+      <div id="map-message" class="map-message" role="status" aria-live="polite">Chargement de la carte…</div>
+      <button class="center-pick" id="center-pick" title="Sélectionner le centre de la carte">⌖ <span>Sélectionner le centre</span></button>
+      <div class="map-bottom"><span><i class="legend-road"></i>Grands axes</span><span><i class="legend-pk"></i>PK / PR</span><span><i class="legend-poi"></i>Repères</span><span id="zoom-label">Zoom 6</span></div>
+      <button id="mobile-panel" class="mobile-panel">⌕ Rechercher / fiche de localisation</button>
+    </section>
+  </main>
+  <div id="toast" role="status" hidden></div>
+  <dialog id="info-dialog"><button class="dialog-close" aria-label="Fermer">×</button><div class="eyebrow">PK LOCATOR</div><h2>Sources et couverture</h2><div id="info-content"></div></dialog>
+  <noscript>Activez JavaScript pour utiliser PK Locator.</noscript>
+</body></html>

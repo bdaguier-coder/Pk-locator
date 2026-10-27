@@ -1,0 +1,35 @@
+{
+  "copyright": "© 2026 Benjamin Daguier — Tous droits réservés.",
+  "countries": {
+    "ES": {
+      "name": "Espagne",
+      "example": "AP-7"
+    },
+    "FR": {
+      "name": "France",
+      "example": "A11"
+    },
+    "PT": {
+      "name": "Portugal",
+      "example": "A1"
+    },
+    "DE": {
+      "name": "Allemagne",
+      "example": "A3"
+    },
+    "IT": {
+      "name": "Italie",
+      "example": "A1"
+    }
+  },
+  "nominatim": "https://nominatim.openstreetmap.org",
+  "overpass": [
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter"
+  ],
+  "satellite": {
+    "url": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    "attribution": "Powered by Esri · Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+    "credit": "Esri World Imagery · Esri, Maxar, Earthstar Geographics, GIS User Community"
+  }
+}

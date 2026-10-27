@@ -1,0 +1,10 @@
+{
+  "name": "pk-locator",
+  "private": true,
+  "type": "module",
+  "version": "1.0.2",
+  "scripts": {
+    "test": "node --test tests/core.test.js"
+  },
+  "copyright": "© 2026 Benjamin Daguier — Tous droits réservés."
+}

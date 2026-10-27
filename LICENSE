@@ -1,0 +1,16 @@
+© 2026 Benjamin Daguier — Tous droits réservés.
+
+Le code original et l’identité graphique de PK Locator sont réservés à Benjamin
+Daguier. Aucune licence de réutilisation du code original n’est accordée par la
+simple publication de ce dépôt.
+
+Les données géographiques et dépendances conservent leurs licences propres :
+- OpenStreetMap : © OpenStreetMap contributors, ODbL 1.0.
+- IGN France BD TOPO : Licence Ouverte / Open Licence 2.0.
+- IGN / CNIG Espagne IGR-RT : CC-BY 4.0, ign.es.
+- Leaflet 1.9.4 : BSD-2-Clause (voir dist/vendor/LICENSE).
+- MapLibre GL JS 5.6.2 et MapLibre GL Leaflet : BSD-3-Clause, licences dans dist/vendor.
+- Esri World Imagery : conditions du fournisseur et attributions des images.
+
+Ces droits réservés ne limitent pas les droits accordés sur les données ouvertes
+et composants tiers par leurs licences respectives.
