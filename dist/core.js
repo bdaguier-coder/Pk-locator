@@ -9,6 +9,46 @@ export function neighbors(records,p){if(!p.section)return [];return records.filt
 export function osmPoint(e){const lat=e.lat??e.center?.lat,lon=e.lon??e.center?.lon;return validPosition({lat,lon})?{id:`${e.type}/${e.id}`,lat,lon,tags:e.tags||{},source:'OpenStreetMap',url:`https://www.openstreetmap.org/${e.type}/${e.id}`}:null}
 export function category(p){const t=p.tags||{};return t.junction==='roundabout'?'Rond-point':t.amenity==='pharmacy'?'Pharmacie':t.amenity==='fuel'?'Station-service':t.amenity==='townhall'?'Mairie':t.amenity==='police'?'Police':t.amenity==='hospital'?'Hôpital':t.amenity==='school'?'École':t.tourism==='museum'?'Musée':t.historic?'Monument':t.shop?'Commerce':t.office==='government'?'Bâtiment public':t.amenity==='restaurant'?'Restaurant':t.amenity==='fast_food'?'Restauration':t.amenity==='cafe'?'Café':t.amenity==='bank'?'Banque':t.amenity==='place_of_worship'?'Lieu de culte':'Point d’intérêt'}
 export function pointName(p){return p.tags.name||p.tags.brand||p.tags.operator||category(p)}
+
+const hasBrand=(p,name)=>normalize([p.tags?.brand,p.tags?.name,p.tags?.operator].filter(Boolean).join(' ')).replaceAll(' ','').includes(normalize(name).replaceAll(' ',''));
+const typeIs=(p,key,val)=>p.tags?.[key]===val;
+const selectionDefinitions={
+  church:['Église',p=>typeIs(p,'building','church')||typeIs(p,'building','cathedral')||typeIs(p,'building','chapel')||(typeIs(p,'amenity','place_of_worship')&&(p.tags.religion==='christian'||/eglise|iglesia|church|kirche|cathedral|chapelle/.test(normalize(p.tags.name))))],
+  townhall:['Mairie',p=>typeIs(p,'amenity','townhall')],
+  monument:['Monument / statue',p=>['monument','memorial','statue','wayside_cross'].includes(p.tags?.historic)],
+  museum:['Musée',p=>typeIs(p,'tourism','museum')],
+  castle:['Château',p=>typeIs(p,'historic','castle')],
+  hospital:['Hôpital',p=>typeIs(p,'amenity','hospital')],
+  restaurant:['Restaurants',p=>['restaurant','fast_food'].includes(p.tags?.amenity)],
+  supermarket:['Supermarchés',p=>typeIs(p,'shop','supermarket')],
+  mall:['Centres commerciaux',p=>typeIs(p,'shop','mall')],
+  mcdonalds:['McDonald’s',p=>hasBrand(p,'mcdonald')],
+  burgerking:['Burger King',p=>hasBrand(p,'burger king')],
+  carrefour:['Carrefour',p=>hasBrand(p,'carrefour')],
+  leclerc:['E.Leclerc',p=>hasBrand(p,'leclerc')],
+  lidl:['Lidl',p=>hasBrand(p,'lidl')],
+  aldi:['Aldi',p=>hasBrand(p,'aldi')],
+  garage:['Garages / réparation auto',p=>['car_repair','car','tyres'].includes(p.tags?.shop)||typeIs(p,'amenity','car_repair')],
+  norauto:['Norauto',p=>hasBrand(p,'norauto')],
+  feuvert:['Feu Vert',p=>hasBrand(p,'feu vert')],
+  midas:['Midas',p=>hasBrand(p,'midas')],
+  speedy:['Speedy',p=>hasBrand(p,'speedy')],
+  euromaster:['Euromaster',p=>hasBrand(p,'euromaster')],
+  points:['Point S',p=>hasBrand(p,'point s')],
+  bosch:['Bosch Car Service',p=>hasBrand(p,'bosch car service')],
+  renault:['Renault',p=>hasBrand(p,'renault')],
+  peugeot:['Peugeot',p=>hasBrand(p,'peugeot')],
+  citroen:['Citroën',p=>hasBrand(p,'citroen')],
+  volkswagen:['Volkswagen',p=>hasBrand(p,'volkswagen')],
+  toyota:['Toyota',p=>hasBrand(p,'toyota')],
+  ford:['Ford',p=>hasBrand(p,'ford')],
+  pharmacy:['Pharmacie',p=>typeIs(p,'amenity','pharmacy')],
+  fuel:['Station-service',p=>typeIs(p,'amenity','fuel')],
+  roundabout:['Rond-point',p=>typeIs(p,'junction','roundabout')],
+  school:['École',p=>typeIs(p,'amenity','school')],
+  bank:['Banque',p=>typeIs(p,'amenity','bank')]
+};
+export function selectedClues(keys){return [...new Set(keys)].filter(key=>Object.hasOwn(selectionDefinitions,key)).map(key=>{const [label,test]=selectionDefinitions[key];return {label,test}})}
 const concepts=[
  ['mcdonalds',/mc\s?donalds?/,p=>normalize(Object.values(p.tags).join(' ')).replaceAll(' ','').includes('mcdonald')],
  ['pharmacie',/pharmac(?:ie|y|ia|ien)/,p=>p.tags.amenity==='pharmacy'],

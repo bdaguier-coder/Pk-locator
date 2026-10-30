@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import {parsePK,roadKey,pkMatches,neighbors,distance,validPosition,extractClues,candidates,localizationText} from '../dist/core.js';
+import {parsePK,roadKey,pkMatches,neighbors,distance,validPosition,extractClues,selectedClues,candidates,localizationText} from '../dist/core.js';
 const data=name=>JSON.parse(fs.readFileSync(new URL('../dist/data/'+name,import.meta.url)));
 const records=data('official-pks.json').pks;
 test('Only sourced numeric road markers enter the catalog',()=>{
@@ -39,4 +39,21 @@ test('PWA shell assets and relative paths exist for a repository subpath',()=>{
   for(const icon of manifest.icons)assert.ok(fs.existsSync(new URL(icon.src,dir)));
   const sw=fs.readFileSync(new URL('sw.js',dir),'utf8');for(const m of sw.matchAll(/'\.\/([^']*)'/g)){if(m[1])assert.ok(fs.existsSync(new URL(m[1],dir)),m[1])}
   assert.ok(fs.readFileSync(new URL('index.html',dir),'utf8').includes('© 2026 Benjamin Daguier — Tous droits réservés.'));
+});
+
+test('Selectable types and brands work with just one reference and all four radii',()=>{
+  const mc={id:'1',lat:47.47,lon:-0.55,tags:{amenity:'fast_food',brand:"McDonald's"}};
+  const burger={id:'2',lat:47.47045,lon:-0.55,tags:{amenity:'fast_food',name:'Burger King'}};
+  const church={id:'3',lat:47.472,lon:-0.55,tags:{amenity:'place_of_worship',religion:'christian',name:'Église Saint-Martin'}};
+  const garage={id:'4',lat:47.47,lon:-0.549,tags:{shop:'car_repair',brand:'Feu Vert'}};
+  const points=[mc,burger,church,garage];
+  for(const radius of [50,100,300,500]){
+    const single=candidates(points,selectedClues(['mcdonalds']),radius);
+    assert.ok(single.length>=1);assert.equal(single[0].count,1);assert.equal(single[0].anchor.id,'1');
+  }
+  assert.equal(candidates(points,selectedClues(['mcdonalds','burgerking']),100)[0].count,2);
+  assert.ok(selectedClues(['garage','feuvert']).every(c=>c.test(garage)));
+  assert.ok(selectedClues(['church']).every(c=>c.test(church)));
+  assert.equal(selectedClues(['supermarket']).every(c=>c.test(church)),false);
+  assert.equal(selectedClues(['mcdonalds','mcdonalds']).length,1);
 });
