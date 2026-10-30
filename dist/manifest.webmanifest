@@ -23,5 +23,6 @@
       "purpose": "any maskable"
     }
   ],
-  "copyright": "© 2026 Benjamin Daguier — Tous droits réservés."
+  "copyright": "© 2026 Benjamin Daguier — Tous droits réservés.",
+  "version": "1.4.0"
 }

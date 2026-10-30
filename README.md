@@ -40,3 +40,12 @@ Les tests vérifient l'exhaustivité de la pagination par rapport aux comptes so
 Sur iPhone, ouvrir dans Safari puis Partager → Sur l'écran d'accueil. L'interface, le manifeste national et l'aperçu espagnol sont préchargés pour le cache ; les autres groupes consultés peuvent être mis en cache progressivement. Une première recherche dans une nouvelle région ou sur une nouvelle route nécessite Internet. Fonds de carte, imagerie, adresses et nouveaux POI nécessitent aussi Internet.
 
 Fond principal OpenFreeMap / OpenStreetMap ; fond Esri Light Gray de secours sans WebGL2. Ce fond de secours peut être ancien. Satellite Esri World Imagery. Les données IGN France sont sous Licence Ouverte 2.0 ; IGN/CNIG Espagne sous CC-BY 4.0 ; BKG POI-Open sous Deutschland Namensnennung 2.0, attribution © Bundesamt für Kartographie und Geodäsie (2025) ; OpenStreetMap sous ODbL. Les licences de données et bibliothèques tierces restent applicables indépendamment du copyright de l'application. Voir DATA.md.
+
+
+## Version 1.4.0 — navigation des zones candidates
+
+Le bandeau rouge ouvre et ferme les résultats dès le premier clic. La vue générale cadre les périmètres réels de toutes les zones, avec les rayons de 50, 100, 300 ou 500 m. Les marqueurs, les étiquettes fléchées, la liste de résultats et le panneau flottant partagent le même recentrage, sans appel à la recherche de repères ou au géocodage. La sélection reste une hypothèse, jamais une position confirmée.
+
+Sur mobile, le formulaire se replie et les raccourcis des zones défilent horizontalement. Les listes de résultats défilent dans leur propre panneau. La réouverture du formulaire replie les résultats pour éviter les superpositions. Les versions des modules et du service worker sont alignées sur 1.4.0 ; le cache précédent est retiré à l’activation et les applications déjà ouvertes se rechargent lors de la prise de contrôle du nouveau worker.
+
+Validation : `npm test` couvre les résultats réels d’Angers aux quatre rayons, les accès équivalents aux zones, la sélection, les états zéro/une/plusieurs zones et le remplacement des résultats. Les contrôles de navigation ont aussi été exécutés dans le navigateur sur ordinateur et dans une fenêtre de 390 × 844 pixels. Ce dernier contrôle vérifie la mise en page responsive dans Chromium, sans remplacer un essai Safari sur un iPhone physique.

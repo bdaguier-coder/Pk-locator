@@ -10,8 +10,8 @@
   <title>PK Locator — Localisation</title>
   <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="./vendor/leaflet.css"><link rel="stylesheet" href="./vendor/maplibre-gl.css"><link rel="stylesheet" href="./style.css?v=1.3.1">
-  <script defer src="./vendor/leaflet.js"></script><script defer src="./vendor/maplibre-gl.js"></script><script defer src="./vendor/leaflet-maplibre-gl.js"></script><script type="module" src="./app.js?v=1.3.1"></script>
+  <link rel="stylesheet" href="./vendor/leaflet.css"><link rel="stylesheet" href="./vendor/maplibre-gl.css"><link rel="stylesheet" href="./style.css?v=1.4.0">
+  <script defer src="./vendor/leaflet.js"></script><script defer src="./vendor/maplibre-gl.js"></script><script defer src="./vendor/leaflet-maplibre-gl.js"></script><script type="module" src="./app.js?v=1.4.0"></script>
 </head>
 <body>
   <header class="topbar">
@@ -53,13 +53,25 @@
         <section class="layer-section"><div class="section-heading">SUR LA CARTE <span id="data-count">Données ouvertes</span></div><label class="toggle-row"><span><i class="legend-road"></i>Autoroutes & grands axes</span><input type="checkbox" id="show-roads" checked></label><label class="toggle-row"><span><i class="legend-pk"></i>Bornes PK / PR documentées</span><input type="checkbox" id="show-pk" checked></label><label class="toggle-row"><span><i class="legend-poi"></i>Points d’intérêt</span><input type="checkbox" id="show-poi" checked></label><p class="micro">Index nationaux Espagne, France et Allemagne. Bornes espacées sur les vues générales ; zoomez pour détailler. Bleu : autoroutes ; rouge : routes nationales ; orange : autres routes. Points d’intérêt au zoom 14.</p><p id="pk-status" class="micro" aria-live="polite">Chargement national selon la carte.</p><button id="load-area" class="outline">Rechercher les données de cette zone</button></section>
         <section id="selection" class="selection" hidden aria-live="polite"></section>
       </div>
-      <footer><span>© 2026 Benjamin Daguier — Tous droits réservés.</span><button id="sources">Sources & couverture ↗</button></footer>
+      <footer><span>© 2026 Benjamin Daguier — Tous droits réservés. · v1.4.0</span><button id="sources">Sources & couverture ↗</button></footer>
     </aside>
     <section class="map-stage" aria-label="Carte interactive">
       <div id="map" role="region" aria-label="Carte interactive de localisation"></div>
       <div class="map-top"><div class="location-chip"><span class="live-ring"></span><span id="map-title">Europe · sélectionnez une ville</span></div><div class="base-switch" aria-label="Fond de carte"><button id="base-map" class="active">Carte</button><button id="base-satellite">Satellite</button></div></div>
       <nav class="country-bar" aria-label="Territoire"><button data-country-view="ES">Espagne</button><button data-country-view="FR">France</button><button data-country-view="DE">Allemagne</button><select id="country-region" aria-label="Région du pays"></select><span id="national-summary">Préparation des index…</span></nav>
       <div id="point-preview" class="point-preview" hidden><strong id="point-coords"></strong><span>Point choisi · marqueur déplaçable</span><div><button id="point-copy">Copier GPS</button><a id="point-street" href="#" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir Google Street View au point sélectionné">Street View ↗</a><button id="point-sheet">Voir la fiche</button></div></div>
+      <section id="candidate-rail" class="candidate-rail" aria-labelledby="candidate-rail-title" hidden>
+        <div class="candidate-rail-heading"><strong id="candidate-rail-title">Zones candidates</strong><button id="candidate-overview" type="button" title="Afficher toutes les zones" aria-label="Afficher toutes les zones candidates">Vue générale</button></div>
+        <div id="candidate-rail-list" class="candidate-rail-list"></div>
+      </section>
+      <div id="candidate-labels" class="candidate-labels" hidden></div>
+      <section id="candidate-results" class="candidate-results" aria-label="Résultats des zones candidates" hidden>
+        <button id="candidate-toggle" class="candidate-toggle" type="button" aria-expanded="false" aria-controls="candidate-list candidate-rail candidate-labels">
+          <span><strong id="candidate-summary"></strong> Comparez les repères avec votre interlocuteur.<span class="candidate-disclaimer">Aucune position n’est confirmée.</span><span class="candidate-toggle-hint">Comparer les zones</span></span><span class="candidate-chevron" aria-hidden="true">⌃</span>
+        </button>
+        <div id="candidate-list" class="candidate-list" hidden></div>
+      </section>
+      <span id="candidate-status" class="sr-only" role="status" aria-live="polite"></span>
       <div id="map-message" class="map-message" role="status" aria-live="polite">Chargement de la carte…</div>
       <button class="center-pick" id="center-pick" title="Placer un point au centre de la carte">⌖ <span>Placer un point au centre</span></button>
       <div class="map-bottom"><span><i class="legend-road"></i>Grands axes</span><span><i class="legend-pk"></i><span id="pk-map-count">PK / PR</span></span><span><i class="legend-poi"></i>Repères</span><span id="zoom-label">Zoom 6</span></div>

@@ -1,7 +1,7 @@
 // © 2026 Benjamin Daguier — Tous droits réservés.
 // Static country-wide indexes built from complete paginated source responses.
-import {roadKey,pkMatches} from './core.js?v=1.2.1';
-import {FR,ES,DE} from './national.js?v=1.2.1';
+import {roadKey,pkMatches} from './core.js?v=1.4.0';
+import {FR,ES,DE} from './national.js?v=1.4.0';
 export function routeBucket(road){let n=0;for(const ch of roadKey(road))n=(n*31+ch.charCodeAt(0))%256;return String(n)}
 export function unpackNational(j){const retrieved=j.retrieved;return j.rows.map(r=>{const shared={country:j.country,road:r[1]||'Route non renseignée',value:r[2],lat:r[3],lon:r[4],section:r[5],sourceUpdated:r[7],retrieved};if(j.country==='FR')return{...shared,id:'ign-fr:'+r[0],unit:'PR',direction:'Côté '+(r[6]||'inconnu'),source:'IGN France · BD TOPO · '+(r[8]||''),status:r[10]||'PR valide',kind:'PR officiel valide — section et côté du référentiel',url:FR+'?'+new URLSearchParams({service:'WFS',version:'2.0.0',request:'GetFeature',typeNames:'BDTOPO_V3:point_de_repere',outputFormat:'application/json',resourceID:r[9]})};if(j.country==='ES')return{...shared,id:'ign-es:'+r[0],unit:'PK',roadUnknown:!r[1],roadRef:'TN-RO_ROAD_'+r[5],aliases:r[8]||[],direction:({bothDirections:'Les deux sens',inDirection:'Sens de référence',inOppositeDirection:'Sens opposé'})[r[6]]||'Sens inconnu',source:'IGN / CNIG Espagne · IGR-RT · CC-BY 4.0',status:r[1]?'Borne officielle référencée':'Borne officielle · nom de route non résolu',kind:'Borne officielle du référentiel IGN / CNIG',url:ES+'/'+r[0]+'?f=json'};return{...shared,id:'bkg-de:'+r[0],unit:'PK',direction:'Sens de kilométrage : '+(r[6]||'inconnu')+' (ne précise pas le sens de circulation)',source:'© Bundesamt für Kartographie und Geodäsie (2025) · POI-Open',status:'Kilométrage BKG · millésime 03/2025',kind:'Position du kilométrage BKG — précision du référentiel',url:DE+'/'+r[0]+'?f=pjson'}})}
 export function createCountryIndex(getJSON,onData=()=>{}){

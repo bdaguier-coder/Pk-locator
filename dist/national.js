@@ -1,6 +1,6 @@
 // © 2026 Benjamin Daguier — Tous droits réservés.
 // Country-wide public inventories. No interpolation or guessed route association.
-import {parsePK,roadKey} from './core.js?v=1.2.1';
+import {parsePK,roadKey} from './core.js?v=1.4.0';
 export const FR='https://data.geopf.fr/wfs/ows';
 export const ES='https://api-features.idee.es/collections/markerpost/items';
 export const ES_ROADS='https://servicios.idee.es/wfs-inspire/transportes';

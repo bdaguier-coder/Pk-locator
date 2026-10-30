@@ -37,7 +37,7 @@ test('The assistance sheet labels a hypothesis and includes actual evidence and 
 test('PWA shell assets and relative paths exist for a repository subpath',()=>{
   const dir=new URL('../dist/',import.meta.url);const manifest=JSON.parse(fs.readFileSync(new URL('manifest.webmanifest',dir)));assert.equal(manifest.start_url,'./');assert.equal(manifest.scope,'./');assert.equal(manifest.display,'standalone');
   for(const icon of manifest.icons)assert.ok(fs.existsSync(new URL(icon.src,dir)));
-  const sw=fs.readFileSync(new URL('sw.js',dir),'utf8');for(const m of sw.matchAll(/'\.\/([^']*)'/g)){if(m[1])assert.ok(fs.existsSync(new URL(m[1],dir)),m[1])}
+  const sw=fs.readFileSync(new URL('sw.js',dir),'utf8');for(const m of sw.matchAll(/'\.\/([^']*)'/g)){if(m[1])assert.ok(fs.existsSync(new URL(m[1].split('?')[0],dir)),m[1])}
   assert.ok(fs.readFileSync(new URL('index.html',dir),'utf8').includes('© 2026 Benjamin Daguier — Tous droits réservés.'));
 });
 
