@@ -57,3 +57,13 @@ test('Selectable types and brands work with just one reference and all four radi
   assert.equal(selectedClues(['supermarket']).every(c=>c.test(church)),false);
   assert.equal(selectedClues(['mcdonalds','mcdonalds']).length,1);
 });
+
+test('Clue form uses querySelectorAll for multiselect',()=>{
+ const code=fs.readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
+ const selector='input[name="reference-kind"]:checked';
+ assert.ok(code.includes("selectedClues($$('"+selector+"').map(input=>input.value))"));
+ assert.ok(!code.includes("selectedClues($('"+selector+"').map(input=>input.value))"));
+ const $$=s=>s===selector?[{value:'mall'},{value:'burgerking'}]:[];
+ const picked=selectedClues($$(selector).map(e=>e.value));
+ assert.deepEqual(picked.map(c=>c.label),['Centres commerciaux','Burger King']);
+});
